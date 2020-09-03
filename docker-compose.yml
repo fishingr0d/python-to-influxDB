@@ -1,0 +1,30 @@
+version: "3"
+services:
+    influx:
+        image: influxdb
+        ports:
+            - 8086:8086
+        environment: 
+            INFLUXDB: DatabasePI
+            INFLUXDB_ADMIN_USER: INFLUXDB_ADMIN_USER
+            INFLUXDB_ADMIN_PASSWORD: pass
+            INFLUX_HTTP_AUTH_ENABLED: "true"
+            INFLUX_HTTP_FLUX_ENABLED: "true"
+        volumes:
+            - ./influx:/var/lib/influxdb
+        networks:
+            admin:
+    chronograf:
+        image: chronograf:latest
+        ports:
+            - '8888:8888'
+        depends_on:
+            - influx
+        environment:
+            - INFLUXDB_URL=http://influxdb:8086
+            - INFLUX_USERNAME=influx_admin
+            - INFLUX_PASSWORD=pass
+        networks:
+            admin:
+networks:
+    admin:
