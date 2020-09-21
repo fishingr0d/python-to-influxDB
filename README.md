@@ -1,10 +1,10 @@
 # Skrypt python dla bazy danych InfluxDB
- Skrypt pobiera dane z czujnika, konwetuje je na line protocol, następnie wysyła je do Influxa.
+ Skrypt pozwalający na pobieranie danych z czujnika, konwetuje je na line protocol, następnie wysyła je do *InfluxDB*.
  
 ## InfluxDB w Docker
- *InfluxDB* jest relacyjną bazą danych open sourcew z serii Time Series Database zaprojektowaną z myślą o dużych obciążeniach zapisu i zapytań. Stanowi integralną część tak zwanego stacka TICK (Telegraf, InfluxDB, Chronograf, Kapacitor). Jest to idealna baza danych dla projektów, które generuja duże ilości danych z timestampem. Pozwala na np. monitorowanie czujników IoT i metryk aplikacji.
- Aby móc korzystac z bazy danych postanowiłam posłuzyc sie Dockerem. *Docker* jest to otwarte oprogramowanie służące do wizualizacji na poziomie systemu operacyjnego, używane przez programistów i administratorów do tworzenia, wdrażania i uruchamiania aplikacji rozproszonych. Innymi słowami, Docker pozwala nam umieścić program i jego zależności, czyli biblioteki, pliki i konfiguracje w przenośnym, wirtualnym kontenerze. Aby uzywać Dockera należy zainstalować go ze strony Dockera
- Aby zainstalować bazę danych InfluxDB, stworzyłam plik *docker-compose.yml*, w którym zawarłam potrzebne do uzyskania influxa konfiguracje i informację  znalezione na docker
+ [*InfluxDB*](influxdata.com) jest relacyjną bazą danych open source z serii Time Series Database zaprojektowaną z myślą o dużych obciążeniach zapisu i zapytań. Stanowi integralną część tak zwanego [stacka TICK](https://www.influxdata.com/time-series-platform/) (Telegraf, InfluxDB, Chronograf, Kapacitor). Jest to idealna baza danych dla projektów, które generuja duże ilości danych z timestampem. Pozwala na np. monitorowanie czujników IoT i metryk aplikacji.
+ Aby móc skorzystać z bazy danych postanowiłam posłużyć się [Dockerem](docker.com). *Docker* jest to otwarte oprogramowanie służące do wizualizacji na poziomie systemu operacyjnego, używane przez programistów i administratorów do tworzenia, wdrażania i uruchamiania aplikacji rozproszonych. Innymi słowami, Docker pozwala nam umieścić program i jego zależności, czyli biblioteki, pliki i konfiguracje w przenośnym, wirtualnym kontenerze. Aby używać Dockera należy zainstalować go ze strony Dockera. 
+ Aby zainstalować bazę danych InfluxDB, stworzyłam plik *docker-compose.yml*, w którym zawarłam potrzebne do uzyskania influxa konfiguracje i informację znalezione na [Docker hubie](https://hub.docker.com/_/influxdb).
  
 ```
  
@@ -29,14 +29,20 @@ networks:
  
 ```
  
- *image* to obraz, z który chcemy wykorzystać w tym przypadku dla influxa jest to *influxdb*
- *ports* tu podajemy port, na którym chcemy, żeby nasz influxdb siś znajdował, domślnie jest to ***8086:8086***
- *environment* to "środowisko", w którym będzie działał nasz influx. Zapisujemy tu konfiguracje, na których będzie działał, bez tworzenia pliku konfiguracyjnego.
-*volumes* durektywa, która instaluje katalogi źródłowe na komputer lub wewnątrz konternera. Jeśli ścieżka już istnieje jako częśc obrazu kontenera, zostanie ona nadpisana przez wyznaczona przez nas ścieżkę.
+- *image* to obraz, który chcemy wykorzystać w tym przypadku dla influxa jest to *influxdb*
+- *ports* tu podajemy port, na którym chcemy, żeby nasz influxdb się znajdował, domślnie jest to ***8086:8086***
+- *environment* to "środowisko", w którym będzie działał nasz influx. Zapisujemy tu konfiguracje, na których będzie działał, bez tworzenia pliku konfiguracyjnego.
+- *volumes* dyrektywa, która instaluje katalogi źródłowe na komputer lub wewnątrz kontenera. Jeśli ścieżka już istnieje jako część obrazu kontenera, zostanie ona nadpisana w wyznaczonej przez nas ścieżce.
  
 
 ## Biblioteki do skryptu Python dla InfluxDB
  Python ma wiele dostępych bibliotek do wykorzystania w naszych projektach, ja użyłam *serial, influxdb, io, datatime, pandas*, a z nich wybrałam najpotrzebniejsze *InfluxDBClient, StringIO, datatime*.
+ 
+ [*PySerial*](https://pythonhosted.org/pyserial/)
+[*InfluxDBClient*](https://influxdb-python.readthedocs.io/en/latest/api-documentation.html)
+[*StringIO*](https://docs.python.org/2/library/stringio.html)
+[*Datetime*](https://docs.python.org/3/library/datetime.html)
+[*Pandas*](https://pandas.pydata.org/docs/)
 
 ```
  import serial
@@ -56,18 +62,18 @@ client=InfluxDBClient(host="localhost",port="8086",username="admin",password="pa
 client.create_database("DatabasePI")
 
 ```
-- *host=* jest to parametr, który należy uzupełnić adresem naszej bazy, w tym przykładzie jest to my jesteśmy naszym hostem, więc wpisujemy *"localhost"*.
-- *port=* to parametr, który wypełniamy portem, na którym znajduje się postawiona przez nas wcześniej baza danych InfluxDB
+- *host=* jest to parametr, który należy uzupełnić adresem naszej bazy danych, w tym przykładzie to my jesteśmy naszym hostem, więc wpisujemy *"localhost"*.
+- *port=* parametr, który wypełniamy portem, na którym znajduje się postawiona przez nas wcześniej baza danych InfluxDB
 - *username=* oraz *password=* podajemy nazwę użytkownika i hasło, które podaliśmy przy konfigurowaniu naszej bazy danych
 
-Wywyołujemy naszego *clienta* i tworzymy nową baze danych
+Wywyołujemy naszego *clienta* i tworzymy nową baze danych.
 
 ```
 client.create_database("DatabasePI")
 
 ```
 
- Następnie tworzymy listę naszych etykiet, którym będziemy przypisywać dane z czujnika i następnie konwertować do *line protocol* naszej bazy danych
+ Następnie tworzymy listę naszych etykiet, którym będziemy przypisywać dane z czujnika i następnie konwertować do *line protocol* naszej bazy danych.
 
 ```
 etykiety = ["temperatura=",
