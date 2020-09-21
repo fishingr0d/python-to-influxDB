@@ -6,7 +6,7 @@
  Aby móc korzystac z bazy danych postanowiłam posłuzyc sie Dockerem. *Docker* jest to otwarte oprogramowanie służące do wizualizacji na poziomie systemu operacyjnego, używane przez programistów i administratorów do tworzenia, wdrażania i uruchamiania aplikacji rozproszonych. Innymi słowami, Docker pozwala nam umieścić program i jego zależności, czyli biblioteki, pliki i konfiguracje w przenośnym, wirtualnym kontenerze. Aby uzywać Dockera należy zainstalować go ze strony Dockera
  Aby zainstalować bazę danych InfluxDB, stworzyłam plik *docker-compose.yml*, w którym zawarłam potrzebne do uzyskania influxa konfiguracje i informację  znalezione na docker
  
- '''
+```
  
 version: "3"
 services:
@@ -27,7 +27,7 @@ services:
 networks:
    admin:
  
- '''
+```
  
  *image* to obraz, z który chcemy wykorzystać w tym przypadku dla influxa jest to *influxdb*
  *ports* tu podajemy port, na którym chcemy, żeby nasz influxdb siś znajdował, domślnie jest to ***8086:8086***
