@@ -22,8 +22,8 @@ services:
             - influx
         environment:
             - INFLUXDB_URL=http://influxdb:8086
-            - INFLUX_USERNAME=influx_admin
-            - INFLUX_PASSWORD=pass
+            - INFLUX_USERNAME=admin
+            - INFLUX_PASSWORD=password
         networks:
             admin:
 networks:
