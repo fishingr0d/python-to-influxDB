@@ -1,5 +1,38 @@
 # Skrypt python dla bazy danych InfluxDB
- Skrypt pobiera dane z czujnika, konwetuje je na line protocol, następnie wysyła je do influxa.
+ Skrypt pobiera dane z czujnika, konwetuje je na line protocol, następnie wysyła je do Influxa.
+ 
+## InfluxDB w Docker
+ *InfluxDB* jest relacyjną bazą danych open sourcew z serii Time Series Database zaprojektowaną z myślą o dużych obciążeniach zapisu i zapytań. Stanowi integralną część tak zwanego stacka TICK (Telegraf, InfluxDB, Chronograf, Kapacitor). Jest to idealna baza danych dla projektów, które generuja duże ilości danych z timestampem. Pozwala na np. monitorowanie czujników IoT i metryk aplikacji.
+ Aby móc korzystac z bazy danych postanowiłam posłuzyc sie Dockerem. *Docker* jest to otwarte oprogramowanie służące do wizualizacji na poziomie systemu operacyjnego, używane przez programistów i administratorów do tworzenia, wdrażania i uruchamiania aplikacji rozproszonych. Innymi słowami, Docker pozwala nam umieścić program i jego zależności, czyli biblioteki, pliki i konfiguracje w przenośnym, wirtualnym kontenerze. Aby uzywać Dockera należy zainstalować go ze strony Dockera
+ Aby zainstalować bazę danych InfluxDB, stworzyłam plik *docker-compose.yml*, w którym zawarłam potrzebne do uzyskania influxa konfiguracje i informację  znalezione na docker
+ 
+ '''
+version: "3"
+services:
+    influx:
+        image: influxdb
+        ports:
+            - 8086:8086
+        environment: 
+            INFLUXDB: DatabasePI
+            INFLUXDB_ADMIN_USER: INFLUXDB_ADMIN_USER
+            INFLUXDB_ADMIN_PASSWORD: pass
+            INFLUX_HTTP_AUTH_ENABLED: "true"
+            INFLUX_HTTP_FLUX_ENABLED: "true"
+        volumes:
+            - ./influx:/var/lib/influxdb
+        networks:
+            admin:
+networks:
+   admin:
+ 
+ '''
+ 
+ *image* to obraz, z który chcemy wykorzystać w tym przypadku dla influxa jest to *influxdb*
+ *ports* tu podajemy port, na którym chcemy, żeby nasz influxdb siś znajdował, domślnie jest to ***8086:8086***
+ *environment* to "środowisko", w którym będzie działał nasz influx. Zapisujemy tu konfiguracje, na których będzie działał, bez tworzenia pliku konfiguracyjnego.
+*volumes* durektywa, która instaluje katalogi źródłowe na komputer lub wewnątrz konternera. Jeśli ścieżka już istnieje jako częśc obrazu kontenera, zostanie ona nadpisana przez wyznaczona przez nas ścieżkę.
+ 
 
 ## Biblioteki do skryptu Python dla InfluxDB
  Python ma wiele dostępych bibliotek do wykorzystania w naszych projektach, ja użyłam *serial, influxdb, io, datatime, pandas*, a z nich wybrałam najpotrzebniejsze *InfluxDBClient, StringIO, datatime*.
