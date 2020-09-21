@@ -38,7 +38,16 @@ networks:
 ## Biblioteki do skryptu Python dla InfluxDB
  Python ma wiele dostępych bibliotek do wykorzystania w naszych projektach, ja użyłam *serial, influxdb, io, datatime, pandas*, a z nich wybrałam najpotrzebniejsze *InfluxDBClient, StringIO, datatime*.
  
-####Linki do dokumentacji bibliotek
+ ```
+ import serial
+ from influxdb import InfluxDBClient
+ from io import StringIO
+ from datetime import datetime
+ import pandas as pd
+ 
+```
+ 
+#### Linki do dokumentacji bibliotek
 
 [*PySerial*](https://pythonhosted.org/pyserial/)
 
@@ -50,14 +59,7 @@ networks:
 
 [*Pandas*](https://pandas.pydata.org/docs/)
 
-```
- import serial
- from influxdb import InfluxDBClient
- from io import StringIO
- from datetime import datetime
- import pandas as pd
- 
-```
+
 ### Konfiguracja InfluxDBClient 
 
  Następnie stworzyłam zmienną *client*, którą przypisałam do InfluxDBClient i podałam parametry niezbędne mi do połączenia się z moją bazą danych.
