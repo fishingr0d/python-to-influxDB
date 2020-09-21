@@ -1,8 +1,8 @@
 # Skrypt python dla bazy danych InfluxDB
-Opis jakiś co robi skrypt.
+ Skrypt pobiera dane z czujnika, konwetuje je na line protocol, następnie wysyła je do influxa.
 
 ## Biblioteki do skryptu Python dla InfluxDB
-Python ma wiele dostępych bibliotek do wykarzystania w naszych projektach, ja użyłam *serial, influxdb, io, datatime, pandas*, a z nich wybrałam najpotrzebniejsze *InfluxDBClient, StringIO, datatime*.
+ Python ma wiele dostępych bibliotek do wykorzystania w naszych projektach, ja użyłam *serial, influxdb, io, datatime, pandas*, a z nich wybrałam najpotrzebniejsze *InfluxDBClient, StringIO, datatime*.
 
 ```
  import serial
@@ -14,11 +14,11 @@ Python ma wiele dostępych bibliotek do wykarzystania w naszych projektach, ja u
 ```
 ### Konfiguracja InfluxDBClient 
 
-Następnie stworzyłam zmienną *client*, którą przypisałam do InfluxDBClient i podałam parametry niezbędne mi do połączenia się z moją bazą danych.
+ Następnie stworzyłam zmienną *client*, którą przypisałam do InfluxDBClient i podałam parametry niezbędne mi do połączenia się z moją bazą danych.
 
 ```
 
-client=InfluxDBClient(host="localhost",port="8086",username="admin",password="pass")
+client=InfluxDBClient(host="localhost",port="8086",username="admin",password="password")
 client.create_database("DatabasePI")
 
 ```
@@ -33,7 +33,7 @@ client.create_database("DatabasePI")
 
 ```
 
-Następnie tworzymy listę naszych etykiet, którym będziemy przypisywać dane z czujnika i następnie konwertować do *lineprotocol* naszej bazy danych
+ Następnie tworzymy listę naszych etykiet, którym będziemy przypisywać dane z czujnika i następnie konwertować do *line protocol* naszej bazy danych
 
 ```
 etykiety = ["temperatura=",
@@ -42,7 +42,7 @@ etykiety = ["temperatura=",
             "pojemosc="]
 ```
 ### Konfiguracja PySerial
-Kolejnym krokiem jest dodanie zmeinnej dla naszego czujnika i przypisania mu jego parametrów.
+ Kolejnym krokiem jest dodanie zmeinnej dla naszego czujnika i przypisania mu jego parametrów.
 ```
 ser = serial.Serial(
     port='/dev/ttyACM0',
@@ -57,8 +57,8 @@ ser.flushInput()
 
 ### Pętla tworząca protocol line
 
-Tworzymy pętlę, która nigdy nie spełni warunku, więc nigdy nie przestanie wykonywać instrukcji, które są w niej zapisane. 
-Dane z czujnika wczytujemy do zmiennej x. Następnie tworzymy zmienną *now*, która po skonwertowaniu na zmienną *int* oraz później na zmienną *string* będzie naszym timestampem, czyli będzie to czas, októrym dane te zostay wysłane na serwer. Rozdzielamy nasze dane znakakami **" , "** oraz **" ' "** i konwertujemy je na *String*. Dane wrzucamy do naszej tablicy, w kolejnej pętli tworzymy nasz protocol line, kótóry pozwala nam dodać dane do bazy danych. Dodajemy ***measuremen*** ***etykietę*** zgodną z licznikiem naszej pętli oraz ***jedną wartość z tablicy***, na końcu dopisując ***timestampa***. Gotową linijkę dodajemy do naszej tablicy za pomocą instrukcji ***data.appeand(new_line)***.
+ Tworzymy pętlę, która nigdy nie spełni warunku, więc nigdy nie przestanie wykonywać instrukcji, które są w niej zapisane. 
+Dane z czujnika wczytujemy do zmiennej x. Następnie tworzymy zmienną *now*, która po konwertujemy na zmienną typu *int* oraz później na zmienną typu *string* będzie naszym timestampem, czyli będzie to czas, w którym dane te zostay wysłane na serwer. Rozdzielamy nasze dane znakakami **" , "** oraz **" ' "** i konwertujemy je na *String*. Dane wrzucamy do naszej tablicy, w kolejnej pętli tworzymy nasz protocol line, kótóry pozwala nam dodać dane do bazy danych. Dodajemy ***measuremen*** ***etykietę*** zgodną z licznikiem naszej pętli oraz ***jedną wartość z tablicy***, na końcu dopisując nasz ***timestamp***. Gotową linijkę dodajemy do naszej tablicy za pomocą instrukcji ***data.appeand(new_line)***.
 
 ```
 
@@ -77,7 +77,7 @@ while 1:
 ```
 ### Ostatni krok, dodawanie danych do bazy InfluxDB
 
- Odnosząc się do naszej zmiennej klienta InfluxDBClient, którą stworzylismy na samym początku dodajemy ***write_points*** oraz wpisujemy potrzebne nam parametry.
+  Odnosząc się do naszej zmiennej klienta InfluxDBClient, którą stworzylismy na samym początku dodajemy ***write_points*** oraz wpisujemy potrzebne nam parametry.
  Następnie dla własnej wiedzy wyświetlam w terminalu lineprotocol, którym dodaję dane do Influxa. 
 
 ```
