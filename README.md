@@ -7,6 +7,7 @@
  Aby zainstalować bazę danych InfluxDB, stworzyłam plik *docker-compose.yml*, w którym zawarłam potrzebne do uzyskania influxa konfiguracje i informację  znalezione na docker
  
  '''
+ 
 version: "3"
 services:
     influx:
