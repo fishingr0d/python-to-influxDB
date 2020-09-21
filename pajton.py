@@ -5,7 +5,7 @@ from io import StringIO
 from datetime import datetime
 import pandas as pd
 
-client=InfluxDBClient(host="localhost",port="8086",username="influx_admin",password="pass", ssl=False, verify_ssl=False)
+client=InfluxDBClient(host="localhost",port="8086",username="admin",password="password")
 client.create_database("DatabasePI")
 
 etykiety = ["temperatura=",
