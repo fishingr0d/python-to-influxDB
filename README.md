@@ -98,7 +98,7 @@ grafana:
 
 
 ## Biblioteki do skryptu Python dla InfluxDB
- Python ma wiele dostępych bibliotek do wykorzystania w naszych projektach, ja użyłam **[*PySerial*](https://pythonhosted.org/pyserial/), [*InfluxDBClient*](https://influxdb-python.readthedocs.io/en/latest/api-documentation.html), [*StringIO*](https://docs.python.org/2/library/stringio.html), [*Datetime*](https://docs.python.org/3/library/datetime.html), a z nich wybrałam najpotrzebniejsze **InfluxDBClient, StringIO, datatime**.
+ Python ma wiele dostępych bibliotek do wykorzystania w naszych projektach, ja użyłam [*PySerial*](https://pythonhosted.org/pyserial/), [*InfluxDBClient*](https://influxdb-python.readthedocs.io/en/latest/api-documentation.html), [*StringIO*](https://docs.python.org/2/library/stringio.html), [*Datetime*](https://docs.python.org/3/library/datetime.html), a z nich wybrałam najpotrzebniejsze **InfluxDBClient, StringIO, datatime**.
  
  ```
  import serial
