@@ -3,7 +3,6 @@ import serial
 from influxdb import InfluxDBClient
 from io import StringIO
 from datetime import datetime
-import pandas as pd
 
 client=InfluxDBClient(host="localhost",port="8086",username="admin",password="password")
 client.create_database("DatabasePI")
